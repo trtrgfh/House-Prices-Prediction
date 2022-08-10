@@ -1,0 +1,127 @@
+---
+title: "Assignment 3"
+author: "YeHao Zheng, Id 1005064635"
+date: "December 1, 2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+## I. Data Wrangling
+
+```{r, echo=FALSE}
+fulldata <- read.csv("/Users/yehao/Desktop/STA302/real203.csv", header = TRUE) #take data from the data file
+set.seed(4635) #make sure I have the same result every time I run the code
+sel_row <- sample(1:nrow(fulldata), size = 150) #take 200 rows of data starting from the first row
+sel_data <- fulldata[sel_row,] #take all the info of the columns
+sel_data$ID
+```
+
+```{r, include=FALSE}
+lotsize <- sel_data$lotlength * sel_data$lotwidth #Create a new variable with the name ‘lotsize’ by multiplying lotwidth by lotlength
+newdata <- cbind(sel_data[, c(2:8, 11)], lotsize) #Use lotsize to replace lotwidth and lotlength and ignore the column ID
+boxplot(newdata$sale) 
+boxplot(newdata$bedroom)
+boxplot(newdata$parking)
+boxplot(newdata$list)
+boxplot(newdata$bathroom)
+boxplot(newdata$sale)
+summary(newdata$parking)
+summary(newdata$bathroom)
+
+first_pt <- which.max(newdata$parking) #find the house with most parking spaces
+rdata1 <- newdata[-first_pt,] #remove the data of the house with most parking spaces
+second_pt <- which.max(rdata1$bathroom) #find the house with most bathrooms
+rdata2 <- rdata1[-second_pt,] #remove the data of the house with most parking spaces
+rdata3 <- rdata2[,-6] #remove the predictor maxsqfoot
+final_data <- na.omit(rdata3) #remove all the rows with NA in it.
+```
+
+(c)\
+After observing the box plot of each variables, I find that there's a case where a house has 12 parking spaces. I think it's quite unusual for a house to have as many parking spaces, and for the houses in this data, the average parking space for a house is 3; so, there might be a error when inputting the data of this house. Another case that I reomved is the house with 8 bathrooms. In this case, the house only has 5 bedrooms. Even if each bedroom has 1 bathroom, and the living room has 1 as well, that's only 6 bathrooms. Therefore, I have removed this case too. \
+The predictor I removed is the 'maxsqfoot' because it has so many missing values. The result will not be so convincing if the data has many NAs. Also, the new variable 'lotsize' has pretty much the same function as 'maxsqfoot', we can probably know how big is the house based on its lotsize. \
+After I removed 'maxsqfoot', I have also removed all the other rows that contain NAs in the rest of the data.
+
+## II. Exploratory Data Analysis
+
+```{r, echo=FALSE}
+corr_matrix <- round(cor(final_data[, -7], use = "pairwise.complete.obs"), 3) #Produce the pairwise correlations and scatterplot matrix for all pairs of quantitative variables in the data
+corr_matrix
+rank_sale <- sort(corr_matrix[1, -1], decreasing = TRUE) # rank each quantitative predictor for sale price from highest to lowest.
+rank_sale
+pairs(final_data[, -7]) #Produce the scatterplot matrix for all pairs of quantitative variables in the data
+res_lotsize <- lm(sale ~ lotsize, data = final_data)
+res <- rstandard(res_lotsize)
+plot(final_data$lotsize, res, xlab = "lotsize", ylab = "Standardized Residual", main = "Residual Plot of Sale Price vs Lotsize- 4635")
+```
+
+(a)\
+sale: continuous \
+list: continuous \
+bedroom: discrete \
+bathroom: discrete \
+parking: discrete \
+maxsqfoot: continuous  
+taxes: continuous \
+lotwidth: continuous \
+lotlength: continuous \
+lotsize : continuous \
+location: categorical \
+(b)\
+Ranking each quantitative predictor for sale price, in therm of correlation coefficient, from highest to lowest is "list," "taxes," "bathroom," "bedroom," "lotsize," "parking." \
+(c)\
+Based on the scatterplot matrix, we can see that the plot of lotsize vs sale price violates the assumption of constant variance strongly because it's showing an increasing variance. Then, the plot of the standardized residuals is also showing a clear pattern of an increasing variance.
+
+## III. Methods and Model
+
+```{r, include=FALSE}
+fullmodel <- lm(sale ~ ., data = final_data) #Fit an additive linear regression model with all available predictors variables for sale price
+summary(fullmodel)
+```
+
+```{r, include=FALSE}
+backward_AIC <- step(fullmodel, direction = "backward") #backward elimination with AIC. 
+summary(backward_AIC)
+backward_BIC <- step(fullmodel, direction = "backward", k=log(length(final_data))) #backward elimination with BIC. 
+summary(backward_BIC)
+```
+
+i.
+
+Values        | Estimate          | P-Value        |
+------------------  | ----------------     | ---------------- |
+Intercept  | 4.482e+04 | 0.437723   |
+list | 8.162e-01 | < 2e-16 |
+bedroom | 5.365e+03 | 0.720695  |
+bathroom | 2.029e+04 | 0.163124 |
+parking | -1.504e+04 | 0.085626 |
+taxes | 2.354e+01 | 0.000132|
+location | 1.084e+05 | 0.006841 | 
+lotsize | 1.780e+00 | 0.486668  |
+
+From the table, we see that only the predictors "list," "taxes," "locationT" are significant because their p-value is smaller than significance level of 5% \ 
+Then, we see that when list price increases by one dollar, the expected sale price will increases by 0.816 dollar when everything else stays the same. The price of taxes increases by one dollar, and then the expected sale price will increases by 0.235 dollar when everything else stays the same. Also, for the predictor "locationT", we see that for the properties in Toronto, the expected sale price will be 108400 dollar higher comparing to the properties in Mississauga, when everything else stays the same. \
+
+ii.
+After the backward elimination with AIC, the fitted model is $\hat{sale} = 49570 + 0.816list + 21350bathroom - 11800parking + 25.08taxes + 108600locationT$. Here we have 5 predictor, but the result in part i shows that only "list," "taxes," "locationT" are significant, so the results are not consistent. \
+
+iii.
+After the backward elimination with BIC, the fitted model is $\hat{sale} = 49570 + 0.816list + 21350bathroom - 11800parking + 25.08taxes + 108600locationT$. The result is also not consistent with the result in part i, but it's consistent with the result in part ii.
+
+
+## IV. Discussions and Limitations
+
+```{r, echo=FALSE}
+par(mfrow=c(2,2))
+plot(backward_BIC)
+```
+
+
+For the residuals vs fitted plot and the scale-location plot, we can say that the linearity and constant variance assumption is basically valid because most of the dots are lying on a straight line. However, there are still rooms for improvement.\
+
+For noraml QQ plot, even though there are some dots at the two ends which are not lying on the dash line, most of the dots in the middle are lying on the dash line. Therefore, the normality assumption is basically valid, but there are still some improvement we can make. \
+
+In order to find a more valid final model, we can first do transformation on Y for the model, so that we can get a more valid normality assumption. Then we can also do transformation on X, so the linearity will be better. Finally, we'll do weighted least squares on the model, so we'll have a more constant variance.\
+
+
+
