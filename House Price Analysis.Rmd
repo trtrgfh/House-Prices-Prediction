@@ -1,7 +1,7 @@
 ## I. Data Wrangling
 
 ```{r, echo=FALSE}
-fulldata <- read.csv("/Users/yehao/Desktop/STA302/real203.csv", header = TRUE) #take data from the data file
+fulldata <- read.csv("real203.csv", header = TRUE) #take data from the data file
 set.seed(4635) #make sure I have the same result every time I run the code
 sel_row <- sample(1:nrow(fulldata), size = 150) #take 200 rows of data starting from the first row
 sel_data <- fulldata[sel_row,] #take all the info of the columns
