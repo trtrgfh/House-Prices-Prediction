@@ -1,12 +1,3 @@
----
-title: "Assignment 3"
-author: "YeHao Zheng, Id 1005064635"
-date: "December 1, 2020"
-output:
-  html_document:
-    df_print: paged
----
-
 ## I. Data Wrangling
 
 ```{r, echo=FALSE}
