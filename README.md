@@ -10,7 +10,7 @@ First-time home buying is currently a major federal issue. Prices for detached h
 Data for this assignment was obtained from the Toronto Real Estate Board (TREB) on detached houses in two separate neighbourhoods, one in the city of Toronto and another in the city of Mississauga. The data can be found in real203.csv.
 
 # Results and evaluation
-<img width="700" alt="variables" src="https://github.com/trtrgfh/House-Prices-Prediction-MLR-Model/assets/73056232/d4d731e0-ec8f-405c-bb23-26279387743f">
+<img width="700" alt="variables" src="https://github.com/trtrgfh/House-Prices-Prediction-MLR-Model/assets/73056232/d4d731e0-ec8f-405c-bb23-26279387743f"> \
 From the table, we see that "list", "taxes", "location" are the most significant varibles that affect the house price, because their p-values are smaller than the significance level of 0.05. 
 
 # License
