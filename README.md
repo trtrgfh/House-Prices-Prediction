@@ -11,8 +11,7 @@ Data for this assignment was obtained from the Toronto Real Estate Board (TREB) 
 
 # Results and evaluation
 <img width="700" alt="variables" src="https://github.com/trtrgfh/House-Prices-Prediction-MLR-Model/assets/73056232/d4d731e0-ec8f-405c-bb23-26279387743f">
-
-The Liberal Party is more popular among women and receives more support from highly educated individuals, single or never married respondents, and residents of Ontario and Quebec. The Conservative Party has nearly equal male and female support, is preferred by those with high school diplomas or college degrees, married respondents, and residents of Alberta. Age distribution is similar for both parties, with the Liberal Party slightly more favored by those 35 or younger. A generalized linear model predicts the Liberal Party would win a close election with about 28.37% of the votes, compared to 27.39% for the Conservative Party.
+From the table, we see that "list", "taxes", "location" are the most significant varibles that affect the house price, because their p-values are smaller than the significance level of 0.05. 
 
 # License
 For this github repository, the License used is [MIT License](https://opensource.org/license/mit/).
