@@ -1,4 +1,4 @@
-<img width="600" alt="housepred" src="https://github.com/trtrgfh/House-Prices-Prediction-MLR-Model/assets/73056232/c03c66d2-b9e5-4e24-bccc-4473950bbc74">
+<img width="500" alt="housepred" src="https://github.com/trtrgfh/House-Prices-Prediction-MLR-Model/assets/73056232/c03c66d2-b9e5-4e24-bccc-4473950bbc74">
 
 # House Prices Prediction by MLR Model
 
