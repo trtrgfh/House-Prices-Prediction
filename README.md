@@ -6,7 +6,6 @@
 First-time home buying is currently a major federal issue. Prices for detached houses have been at an all-time high during the current COVID-19 period. This project focuses on predicting house prices using a Multiple Linear Regression (MLR) model. The objective is to develop a reliable predictive model that can estimate the selling price of houses based on various features.
 
 # Data
-## Source Data
 Data for this assignment was obtained from the Toronto Real Estate Board (TREB) on detached houses in two separate neighbourhoods, one in the city of Toronto and another in the city of Mississauga. The data can be found in real203.csv.
 
 # Results and evaluation
